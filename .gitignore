@@ -1,0 +1,10 @@
+docsDisciplina/*
+*.docx
+*.zip
+Resumo.md
+Sprint*.md
+Resum*.md
+sprints/
+node_modules/
+dist/
+.env
