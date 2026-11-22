@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoPrioridade {
+  GERAL
+  PRIORITARIA // Lei 10.048/2000
+}
+
+enum StatusSenha {
+  AGUARDANDO
+  CHAMANDO
+  EM_ATENDIMENTO
+  FINALIZADA
+  AUSENTE
+}
+
+enum Role {
+  ATENDENTE
+  GESTOR
+}
+
+model Servico {
+  id           String   @id @default(uuid())
+  nome         String   // Ex: Reconhecimento de Firma
+  sigla        String   @unique // Ex: FIR, AUT, CIV
+  tempoMedio   Int      @default(5) // Em minutos
+  ativo        Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  senhas       Senha[]
+
+  @@map("servicos")
+}
+
+model Guiche {
+  id           String        @id @default(uuid())
+  numero       Int           @unique // Ex: 1, 2, 3
+  nome         String        // Ex: Guichê 01
+  ativo        Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  atendimentos Atendimento[]
+
+  @@map("guiches")
+}
+
+model Usuario {
+  id           String        @id @default(uuid())
+  nome         String
+  login        String        @unique
+  senha        String        // Hash simples ou senha de rede local
+  role         Role          @default(ATENDENTE)
+  ativo        Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  atendimentos Atendimento[]
+
+  @@map("usuarios")
+}
+
+model Senha {
+  id             String         @id @default(uuid())
+  codigo         String         // Ex: FIR-G001 ou FIR-P001
+  numeroSequencial Int          // Sequencial diário (1, 2, 3...)
+  tipoPrioridade TipoPrioridade @default(GERAL)
+  status         StatusSenha    @default(AGUARDANDO)
+  
+  servicoId      String
+  servico        Servico        @relation(fields: [servicoId], references: [id])
+  
+  createdAt      DateTime       @default(now()) // Hora da emissão
+  chamadaEm      DateTime?      // Hora da primeira chamada
+  atendimentos   Atendimento[]
+
+  @@map("senhas")
+}
+
+model Atendimento {
+  id           String    @id @default(uuid())
+  inicioEm     DateTime  @default(now())
+  fimEm        DateTime?
+  
+  senhaId      String
+  senha        Senha     @relation(fields: [senhaId], references: [id])
+  
+  guicheId     String
+  guiche       Guiche    @relation(fields: [guicheId], references: [id])
+  
+  usuarioId    String?
+  usuario      Usuario?  @relation(fields: [usuarioId], references: [id])
+
+  @@map("atendimentos")
+}
