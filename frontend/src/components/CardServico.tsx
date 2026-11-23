@@ -1,5 +1,5 @@
 import React from 'react';
-import { Servico } from '../types/index.ts';
+import type { Servico } from '../types/index.ts';
 
 
 interface CardServicoProps {
