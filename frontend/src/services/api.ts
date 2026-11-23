@@ -1,4 +1,4 @@
-import { Servico, Guiche } from '../types/index.ts';
+import type { Servico, Guiche } from '../types/index.ts';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333/api';
 
