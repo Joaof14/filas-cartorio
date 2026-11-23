@@ -63,7 +63,6 @@ describe('Suíte de Testes — Emissão de Senhas e Regras de Fila', () => {
 
   it('GET /api/senhas/hoje — Deve listar as senhas emitidas no dia', async () => {
     const response = await supertest(app.server).get('/api/senhas/hoje');
-
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThanOrEqual(2);
