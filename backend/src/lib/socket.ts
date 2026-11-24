@@ -12,7 +12,13 @@ export function initSocketIO(httpServer: HttpServer) {
   });
 
   io.on('connection', (socket) => {
-    console.log(`🔌 Novo cliente conectado via WebSocket na LAN: [${socket.id}]`);
+    console.log(`🔌 Cliente conectado via WebSocket na LAN: [${socket.id}]`);
+
+    // Monitores de TV entram na sala especifica
+    socket.on('join:monitor', () => {
+      socket.join('monitor-room');
+      console.log(`📺 Monitor TV ingressou na sala [monitor-room]: ${socket.id}`);
+    });
 
     socket.on('disconnect', () => {
       console.log(`❌ Cliente desconectado: [${socket.id}]`);
