@@ -14,6 +14,11 @@ describe('Suíte de Testes — Emissão de Senhas e Regras de Fila', () => {
     const res = await supertest(app.server).get('/api/servicos');
     if (res.body.length > 0) {
       servicoIdValido = res.body[0].id;
+    } else {
+      const criado = await supertest(app.server)
+        .post('/api/servicos')
+        .send({ nome: 'Reconhecimento de Firma', sigla: 'FIR', tempoMedio: 3 });
+      servicoIdValido = criado.body.id;
     }
   });
 
