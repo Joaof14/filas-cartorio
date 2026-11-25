@@ -1,6 +1,7 @@
 import type { Servico, Guiche, Senha, TipoPrioridade } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333/api';
+const API_HOST = `http://${window.location.hostname}:3333`;
+const API_BASE_URL = import.meta.env.VITE_API_URL || `${API_HOST}/api`;
 
 export const api = {
   async getServicos(): Promise<Servico[]> {
@@ -17,7 +18,7 @@ export const api = {
 
   async checkHealth(): Promise<boolean> {
     try {
-      const res = await fetch('http://localhost:3333/health');
+      const res = await fetch(`${API_HOST}/health`);
       return res.ok;
     } catch {
       return false;
