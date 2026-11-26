@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "dev": "tsx watch src/server.ts",
+    "predev": "docker compose up -d --wait && npx prisma migrate deploy && npx prisma db seed",
+    "dev": "bash -c 'trap \"docker compose stop\" EXIT; tsx watch src/server.ts'",
+    "dev:only": "tsx watch src/server.ts",
     "build": "tsup src/server.ts --out-dir dist",
     "start": "node dist/server.js"
   },

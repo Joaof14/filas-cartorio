@@ -2,6 +2,15 @@ import type { Servico, Guiche, Senha, TipoPrioridade } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333/api';
 
+export interface ChamadaRecente {
+  id: string;
+  codigo: string;
+  tipoPrioridade: TipoPrioridade;
+  chamadaEm: string;
+  servico: { nome: string };
+  guiche: { numero: number; nome: string };
+}
+
 export const api = {
   async getServicos(): Promise<Servico[]> {
     const res = await fetch(`${API_BASE_URL}/servicos`);
@@ -33,5 +42,15 @@ export const api = {
     });
     if (!res.ok) throw new Error('Erro ao emitir senha.');
     return res.json();
+  },
+
+  // Sprint 3: Últimas chamadas para o Monitor TV
+  async getUltimasChamadas(): Promise<ChamadaRecente[]> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/senhas/ultimas-chamadas`);
+      return res.ok ? res.json() : [];
+    } catch {
+      return [];
+    }
   },
 };
