@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { socket } from '../services/socket.ts';
-import { api, ChamadaRecente } from '../services/api.ts';
+import { api, type ChamadaRecente } from '../services/api.ts';
 import { tocarGongoChamada, falarSenhaChamada } from '../utils/somChamada.ts';
 
 
