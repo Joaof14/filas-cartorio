@@ -1,6 +1,8 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { TotemPage } from './pages/TotemPage';
 import { MonitorPage } from './pages/MonitorPage.tsx';
+import { AtendentePage } from './pages/AtendentePage.tsx';
+import { AdminPage } from './pages/AdminPage.tsx';
 
 
 function HomeHub() {
@@ -58,6 +60,8 @@ export default function App() {
       <Route path="/totem" element={<TotemPage />} />
       <Route path="/atendente" element={<PlaceholderPage title="🧑‍💼 Painel do Atendente (Sprint 4)" />} />
       <Route path="/monitor" element={<MonitorPage />} />
+      <Route path="/atendente" element={<AtendentePage />} />
+      <Route path="/admin" element={<AdminPage />} />
 
     </Routes>
   );
