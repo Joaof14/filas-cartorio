@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, EstatisticasFila } from '../services/api.ts';
-import { Guiche, Servico } from '../types/index.ts';
+import { api, type EstatisticasFila } from '../services/api.ts';
+import { type Guiche, type Servico } from '../types/index.ts';
 import { socket } from '../services/socket.ts';
 import { ResumoFilaBar } from '../components/ResumoFilaBar.tsx';
 

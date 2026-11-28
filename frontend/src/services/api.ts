@@ -11,6 +11,12 @@ export interface ChamadaRecente {
   guiche: { numero: number; nome: string };
 }
 
+export interface EstatisticasFila {
+  totalAguardando: number;
+  prioritarias: number;
+  gerais: number;
+}
+
 export const api = {
   async getServicos(): Promise<Servico[]> {
     const res = await fetch(`${API_BASE_URL}/servicos`);
@@ -52,5 +58,70 @@ export const api = {
     } catch {
       return [];
     }
+  }, 
+  async getEstatisticasFila(): Promise<EstatisticasFila> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/atendimento/estatisticas-fila`);
+      return res.ok ? res.json() : { totalAguardando: 0, prioritarias: 0, gerais: 0 };
+    } catch {
+      return { totalAguardando: 0, prioritarias: 0, gerais: 0 };
+    }
+  },
+
+  async chamarProximo(guicheId: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/atendimento/chamar-proximo`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guicheId }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Fila vazia.');
+    }
+    return res.json();
+  },
+
+  async rechamar(senhaId: string, guicheNumero: number): Promise<void> {
+    await fetch(`${API_BASE_URL}/atendimento/rechamar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaId, guicheNumero }),
+    });
+  },
+
+  async iniciarAtendimento(senhaId: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/atendimento/iniciar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaId }),
+    });
+    return res.json();
+  },
+
+  async finalizarAtendimento(senhaId: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/atendimento/finalizar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaId }),
+    });
+    return res.json();
+  },
+
+  async marcarAusente(senhaId: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/atendimento/ausente`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaId }),
+    });
+    return res.json();
+  },
+
+  async transferirSenha(senhaId: string, novoServicoId: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/atendimento/transferir`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaId, novoServicoId }),
+    });
+    return res.json();
   },
 };
