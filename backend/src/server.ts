@@ -5,6 +5,7 @@ import { servicosRoutes } from './routes/servicos.js';
 import { guichesRoutes } from './routes/guiches.js';
 import { senhasRoutes } from './routes/senhas.js';
 import { initSocketIO } from './lib/socket.js';
+import { atendimentoRoutes } from './routes/atendimento.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ export async function buildApp() {
   await app.register(servicosRoutes);
   await app.register(guichesRoutes);
   await app.register(senhasRoutes);
+  await app.register(atendimentoRoutes); 
 
   return app;
 }
@@ -57,3 +59,4 @@ async function start() {
 if (process.env.NODE_ENV !== 'test') {
   start();
 }
+
