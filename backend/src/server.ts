@@ -57,3 +57,12 @@ async function start() {
 if (process.env.NODE_ENV !== 'test') {
   start();
 }
+
+import { atendimentoRoutes } from './routes/atendimento.js';
+
+// Dentro de buildApp():
+await app.register(servicosRoutes);
+await app.register(guichesRoutes);
+await app.register(senhasRoutes);
+await app.register(atendimentoRoutes); // NOVO: Rotas da Sprint 4
+
